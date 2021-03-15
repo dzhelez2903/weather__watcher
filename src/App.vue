@@ -68,7 +68,7 @@ export default {
         wind: ''
       };
 
-      if (this.city > 0) {
+      if (name>0) {
         this.cities.push(currentCity);
         setInterval(async () => {
           const f = await fetch(
