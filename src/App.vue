@@ -72,13 +72,36 @@ export default {
       if (currentCity.name.length > 0) {
         this.cities.push(currentCity);
 
+        this.removeCity = setTimeout(async () => {
+          const f = await fetch(
+              `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
+          );
+          const data = await f.json();
+          console.log(data);
+
+          this.cities.find(w => w.name === currentCity.name).name =
+              data.name;
+
+          this.cities.find(w => w.name === currentCity.name).country =
+              data.sys.country;
+
+          this.cities.find(w => w.name === currentCity.name).weather =
+              data.weather[0].main;
+
+          this.cities.find(w => w.name === currentCity.name).temperature =
+              Math.round(data.main.temp);
+
+          this.cities.find(w => w.name === currentCity.name).wind =
+              data.wind.speed;
+
+        }, 1000);
+
         this.removeCity = setInterval(async () => {
           const f = await fetch(
               `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
-        );
+          );
           const data = await f.json();
           console.log(data);
-          console.log(f);
 
           this.cities.find(w => w.name === currentCity.name).name =
               data.name;
@@ -95,37 +118,8 @@ export default {
           this.cities.find(w => w.name === currentCity.name).wind =
               data.wind.speed;
 
-        }, 100);
-
-        clearInterval(this.removeCity);
-        this.removeCity = '';
-
-
-        this.removeCity = setInterval(async () => {
-          const f = await fetch(`${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
-        );
-          const data = await f.json();
-          console.log(data);
-          console.log(f);
-
-          this.cities.find(w => w.name === currentCity.name).name =
-              data.name;
-
-          this.cities.find(w => w.name === currentCity.name).country =
-              data.sys.country;
-
-          this.cities.find(w => w.name === currentCity.name).weather =
-              data.weather[0].main;
-
-          this.cities.find(w => w.name === currentCity.name).temperature =
-              Math.round(data.main.temp);
-
-          this.cities.find(w => w.name === currentCity.name).wind =
-              data.wind.speed;
-
-        }, 5000);
+        }, 300000);
       };
-
       this.city = '';
     },
 
@@ -142,8 +136,10 @@ export default {
 
     handleDelete(cityToRemove) {
       clearInterval(this.removeCity);
+      console.log(this.cities);
       this.removeCity = '';
       this.cities = this.cities.filter(w => w !== cityToRemove);
+      console.log(this.cities);
     },
   },
 };
