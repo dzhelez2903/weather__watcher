@@ -53,8 +53,9 @@ export default {
       api_key: '2cdac6125b9c12ea56115604b0ac04f8',
       url_base: 'https://api.openweathermap.org/data/2.5/',
       language: 'ru',
-      city: "",
+      city: '',
       cities: [],
+      removeCity: ''
     };
   },
 
@@ -65,17 +66,47 @@ export default {
         country: '',
         weather: '',
         temperature: '',
-        wind: ''
+        wind: '',
       };
 
       if (currentCity.name.length > 0) {
         this.cities.push(currentCity);
-        setInterval(async () => {
+
+        this.removeCity = setInterval(async () => {
           const f = await fetch(
               `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
-          );
+        );
           const data = await f.json();
           console.log(data);
+          console.log(f);
+
+          this.cities.find(w => w.name === currentCity.name).name =
+              data.name;
+
+          this.cities.find(w => w.name === currentCity.name).country =
+              data.sys.country;
+
+          this.cities.find(w => w.name === currentCity.name).weather =
+              data.weather[0].main;
+
+          this.cities.find(w => w.name === currentCity.name).temperature =
+              Math.round(data.main.temp);
+
+          this.cities.find(w => w.name === currentCity.name).wind =
+              data.wind.speed;
+
+        }, 100);
+
+        clearInterval(this.removeCity);
+        this.removeCity = '';
+
+
+        this.removeCity = setInterval(async () => {
+          const f = await fetch(`${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
+        );
+          const data = await f.json();
+          console.log(data);
+          console.log(f);
 
           this.cities.find(w => w.name === currentCity.name).name =
               data.name;
@@ -95,9 +126,7 @@ export default {
         }, 5000);
       };
 
-      console.log(currentCity);
-
-      this.city = "";
+      this.city = '';
     },
 
     dateBuilder () {
@@ -112,9 +141,11 @@ export default {
     },
 
     handleDelete(cityToRemove) {
+      clearInterval(this.removeCity);
+      this.removeCity = '';
       this.cities = this.cities.filter(w => w !== cityToRemove);
     },
-  }
+  },
 };
 </script>
 
@@ -195,8 +226,6 @@ font-face {
   justify-content: space-around;
   width: 80%;
   flex-wrap: wrap;
-
-
 }
 
 </style>
