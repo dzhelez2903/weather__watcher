@@ -87,11 +87,11 @@ export default {
 
           this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
 
-          this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
+          this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].description;
 
           this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
 
-          this.cities.find(w => w.name === currentCity.name).wind = data.wind.speed;
+          this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
 
           this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
 
@@ -109,11 +109,11 @@ export default {
 
                   this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
 
-                  this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
+                  this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].description;
 
                   this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
 
-                  this.cities.find(w => w.name === currentCity.name).wind = data.wind.speed;
+                  this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
 
                   this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
                 }, 300000));
