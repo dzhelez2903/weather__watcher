@@ -1,46 +1,49 @@
 <template>
   <div class="main">
-      <section class="input">
-            <div class="">
-              <h1>Weather watcher</h1>
-              <input
-                  v-model="city"
-                  @keydown.enter="add"
-                  type="text"
-                  placeholder= "Enter city name..."
-              />
-            </div>
-        <button
-            @click="add"
-            type="button"
-        >
-          Add city
-        </button>
-      </section>
+    <section class="input">
+      <div class="">
+        <h1>Weather watcher</h1>
+        <input
+            v-model="city"
+            @keydown.enter="add"
+            type="text"
+            placeholder= "Enter city name..."
+        />
+      </div>
+      <button
+          @click="add"
+          type="button"
+      >
+        Add city
+      </button>
+    </section>
 
-      <template class="dashBoard" v-if="cities.length">
-        <hr/>
-          <div
-              v-for="w in cities"
-              :key="w.name"
-              @click="select(w)"
-          >
-            <div @click="add">
-              <div class="date">{{ dateBuilder () }}</div>
-                {{ w.name }}
-                {{ w.country }}
-                {{ w.weather }}
-                {{ w.temperature }}&degC
-                {{ w.wind }}
-              <button @click.stop="handleDelete(w)">
-                Удалить
-              </button>
-            </div>
-          </div>
-        <hr/>
-      </template>
+    <template class="dashBoard" v-if="cities.length">
+      <hr/>
+      <div
+          v-for="w in cities"
+          :key="w.name"
+          @click="select(w)"
+      >
+        <div @click="add">
+          <div  class="date">{{ dateBuilder () }}</div>
+        <div>
+          {{ w.name }}
+          {{ w.country }}
+          {{ w.weather }}
+          {{ w.temperature }}&degC
+          {{ w.wind }}
+          <img v-bind:src="'http://openweathermap.org/img/w/' + w.icon + '.png'">
+          <button @click.stop="handleDelete(w)">
+            Удалить
+          </button>
+        </div>
+        </div>
+      </div>
+      <hr/>
+    </template>
 
-      <section></section>
+    <section></section>
   </div>
 </template>
 
@@ -55,71 +58,66 @@ export default {
       language: 'ru',
       city: '',
       cities: [],
-      removeCity: ''
+      removeCity: [],
     };
   },
 
   methods: {
     add() {
-        const currentCity = {
+      const currentCity = {
         name: this.city,
         country: '',
         weather: '',
         temperature: '',
         wind: '',
+        icon:'',
       };
 
       if (currentCity.name.length > 0) {
         this.cities.push(currentCity);
 
-        this.removeCity = setTimeout(async () => {
+        setTimeout(async () => {
           const f = await fetch(
               `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
           );
           const data = await f.json();
           console.log(data);
 
-          this.cities.find(w => w.name === currentCity.name).name =
-              data.name;
+          this.cities.find(w => w.name === currentCity.name).name = data.name;
 
-          this.cities.find(w => w.name === currentCity.name).country =
-              data.sys.country;
+          this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
 
-          this.cities.find(w => w.name === currentCity.name).weather =
-              data.weather[0].main;
+          this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
 
-          this.cities.find(w => w.name === currentCity.name).temperature =
-              Math.round(data.main.temp);
+          this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
 
-          this.cities.find(w => w.name === currentCity.name).wind =
-              data.wind.speed;
+          this.cities.find(w => w.name === currentCity.name).wind = data.wind.speed;
 
-        }, 1000);
+          this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
 
-        this.removeCity = setInterval(async () => {
-          const f = await fetch(
-              `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
-          );
-          const data = await f.json();
-          console.log(data);
+        }, 10);
 
-          this.cities.find(w => w.name === currentCity.name).name =
-              data.name;
+        this.removeCity.push(setInterval(
+                async () => {
+                  const f = await fetch(
+                      `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
+                  );
+                  const data = await f.json();
+                  console.log(data);
 
-          this.cities.find(w => w.name === currentCity.name).country =
-              data.sys.country;
+                  this.cities.find(w => w.name === currentCity.name).name = data.name;
 
-          this.cities.find(w => w.name === currentCity.name).weather =
-              data.weather[0].main;
+                  this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
 
-          this.cities.find(w => w.name === currentCity.name).temperature =
-              Math.round(data.main.temp);
+                  this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
 
-          this.cities.find(w => w.name === currentCity.name).wind =
-              data.wind.speed;
+                  this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
 
-        }, 300000);
-      };
+                  this.cities.find(w => w.name === currentCity.name).wind = data.wind.speed;
+
+                  this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
+                }, 300000));
+      }
       this.city = '';
     },
 
@@ -135,11 +133,10 @@ export default {
     },
 
     handleDelete(cityToRemove) {
-      clearInterval(this.removeCity);
-      console.log(this.cities);
-      this.removeCity = '';
-      this.cities = this.cities.filter(w => w !== cityToRemove);
-      console.log(this.cities);
+      let idx = this.cities.indexOf(cityToRemove);
+      clearInterval(this.removeCity[idx]);
+      this.removeCity = this.removeCity.filter(e => e !== this.removeCity[idx]);
+      this.cities = this.cities.filter(w => w !== this.cities[idx]);
     },
   },
 };
@@ -149,7 +146,7 @@ export default {
 
 @import "assets/scss/reset.css";
 
-font-face {
+@font-face {
   font-family: "Montserrat Regular";
   src: url(./assets/fonts/Montserrat-Regular.ttf) format("ttf");
   font-weight: normal;
