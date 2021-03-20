@@ -57,16 +57,78 @@
 
     <section>
       <div class="description" v-if="sel" :class="{hot: sel.temperature >= 16}">
-        <div>
+        <div class="city_block">
           <div class="city">
             <p class="name">{{ sel.name }}, {{ sel.country }}</p>
             <p class="date">{{ dateBuilder () }}</p>
             <p class="weather">{{ sel.weather }}</p>
           </div>
           <div class="icons">
-            <div class="wind">{{ sel.wind }}m/s</div>
-            <div class="humidity">{{ sel.humidity }}%</div>
-            <div class="temperature">{{ sel.temperature }}&degC</div>
+            <div class="wind">
+              <svg width="63px" height="48px" viewBox="0 0 63 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                <!-- Generator: Sketch 3.0.3 (7891) - http://www.bohemiancoding.com/sketch -->
+                <title>Weather-wind</title>
+                <desc>Created with Sketch.</desc>
+                <defs></defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                  <g id="Weather-wind" sketch:type="MSLayerGroup" transform="translate(0.000000, 1.000000)" stroke="#fff" stroke-width="2">
+                    <path d="M34.8,8.5 C34.8,3.8 38.7,0 43.4,0 C48.2,0 52,3.8 52,8.5 C52,13.2 48.1,17 43.4,17 L4,17" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M47,30.5 C47,34.6 50.3,38 54.5,38 C58.6,38 62,34.6 62,30.5 C62,26.4 58.7,23 54.5,23 L20,23" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M27,38.5 C27,42.6 30.3,46 34.4,46 C38.5,46 41.8,42.7 41.8,38.5 C41.8,34.4 38.5,31 34.4,31 L0,31" id="Shape" sketch:type="MSShapeGroup"></path>
+                  </g>
+                </g>
+              </svg>
+              <br>
+              {{ sel.wind }} m/s
+            </div>
+            <div class="humidity">
+              <svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="64px"
+                   viewBox="0 0 48 64" enable-background="new 0 0 48 64" xml:space="preserve">
+                <title>Wave-signal-1</title>
+                <desc>Created with Sketch.</desc>
+                <g id="Page-1" sketch:type="MSPage">
+	              <g id="Wave-signal-1" transform="translate(1.000000, 2.000000)" sketch:type="MSLayerGroup">
+		            <path id="Shape" sketch:type="MSShapeGroup" fill="none" stroke="#fff" stroke-width="2" d="M25,27.9c1.7-0.9,2.9-2.7,2.9-4.7
+			          c0-2.9-2.3-5.3-5.1-5.3s-4.9,2.4-4.9,5.3c0,2.1,1.3,4,2.9,4.8c-3.8,4.7-6.9,19.5-6.9,23.8c0,5.1,4.2,9.2,9.1,9.2s8.9-4,8.9-9.1
+			          C32,47.6,28.8,32.6,25,27.9L25,27.9z"/>
+                <path id="Shape_2_" sketch:type="MSShapeGroup" fill="none" stroke="#fff" stroke-width="2" d="M4,35.9c-2.5-3.7-4-8.2-4-13
+			          c0-12.7,10.3-23,23-23s23,10.3,23,23c0,4.9-1.5,9.4-4.1,13.1"/>
+                <path id="Shape_1_" sketch:type="MSShapeGroup" fill="none" stroke="#fff" stroke-width="2" d="M10.3,29.9
+			          c-1.2-2.2-2-4.7-2-7.3c0-8.1,6.6-14.7,14.7-14.7s14.7,6.6,14.7,14.7c0,2.7-0.7,5.2-2,7.3"/>
+	              </g>
+                </g>
+              </svg>
+              <br>
+              {{ sel.humidity }}%
+            </div>
+            <div class="temperature">
+              <svg width="30px" height="65px" viewBox="0 0 30 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                <!-- Generator: Sketch 3.0.3 (7891) - http://www.bohemiancoding.com/sketch -->
+                <title>Temperature</title>
+                <desc>Created with Sketch.</desc>
+                <defs></defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                  <g id="Temperature" sketch:type="MSLayerGroup" transform="translate(0.000000, 2.000000)" stroke="#fff" stroke-width="2">
+                    <path d="M22.1,42.7 L22.1,6.8 C22.1,2.1 19.1,-0.1 15.2,-0.1 C11.2,-0.1 8.2,2.1 8.2,6.8 L8.2,42.6 C5.8,44.6 4.1,47.8 4.1,51.2 C4.1,57.3 9.2,61.9 15.3,61.9 C21.4,61.9 26.2,57.3 26.2,51.2 C26.1,48 24.4,44.7 22.1,42.7 L22.1,42.7 Z" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M15.1,7 L15.1,41.8" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M21.4,47.9 C21.9,48.8 22.1,49.9 22.1,51 C22.1,54.8 19,58 15.1,58" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M25,9.9 L30,9.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M25,16.9 L28,16.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M25,23.9 L30,23.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M25,29.9 L28,29.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M25,36.9 L30,36.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M0,9.9 L5,9.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M2,16.9 L5,16.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M0,23.9 L5,23.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M2,29.9 L5,29.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                    <path d="M0,36.9 L5,36.9" id="Shape" sketch:type="MSShapeGroup"></path>
+                  </g>
+                </g>
+              </svg>
+              <br>
+              {{ sel.temperature }}&degC
+            </div>
           </div>
           <div v-for="(idx) in cities" :key="idx"></div>
         </div>
@@ -144,10 +206,6 @@ export default {
           this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
 
           this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
-
-          if (this.sel?.name === currentCity.name) {
-            this.details.push(name);
-          };
         }, 10);
 
         this.removeCity.push(setInterval(
@@ -171,10 +229,6 @@ export default {
                   this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
 
                   this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
-
-                  if (this.sel?.name === currentCity.name) {
-                    this.details.push(name);
-                  }
                 }, 300000));
       }
       this.city = '';
@@ -348,6 +402,7 @@ svg {
     background-position: bottom;
     border-radius: 16px;
     box-shadow: 3px 6px rgba(0,0,0,0.25);
+    position: relative;
 
     .city {
       width: 30%;
@@ -386,6 +441,10 @@ svg {
       text-shadow: 1px 3px rgba(0,0,0,0.25);
 
       .wind {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         text-align: center;
         padding: 50px;
         border-radius: 16px;
@@ -394,6 +453,10 @@ svg {
       }
 
       .humidity {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         text-align: center;
         padding: 50px;
         border-radius: 16px;
@@ -402,6 +465,10 @@ svg {
       }
 
       .temperature {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         text-align: center;
         padding: 50px;
         border-radius: 16px;
