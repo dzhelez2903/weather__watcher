@@ -10,10 +10,7 @@
             placeholder= "Enter city name..."
         />
       </div>
-      <button
-          @click="add"
-          type="button"
-      >
+      <button @click="add" type="button">
         Add city
       </button>
     </section>
@@ -59,7 +56,7 @@
     </section>
 
     <section>
-      <div class="description" v-if="sel">
+      <div class="description" v-if="sel" :class="{hot: sel.temperature >= 16}">
         <div v-for="(idx) in cities" :key="idx">
           <div class="city">
             <p class="name">{{ sel.name }}, {{ sel.country }}</p>
@@ -149,7 +146,7 @@ export default {
 
           if (this.sel?.name === currentCity.name) {
             this.details.push(name);
-          }
+          };
         }, 10);
 
         this.removeCity.push(setInterval(
@@ -296,6 +293,7 @@ svg {
   border: 3px solid #fff;
   border-radius: 16px;
   margin: 30px;
+  transition: 0.3s;
 }
 
   .city_container {
@@ -350,7 +348,6 @@ svg {
     border-radius: 16px;
     box-shadow: 3px 6px rgba(0,0,0,0.25);
 
-
     .city {
       width: 30%;
       margin: 0 auto;
@@ -360,6 +357,7 @@ svg {
       background-color: rgba(255,255,255,0.15);
       border-radius: 16px;
       box-shadow: 3px 6px rgba(0,0,0,0.25);
+      transition: 1s;
 
       .name {
         font-size: 48px;
@@ -414,5 +412,6 @@ svg {
 
 .hot {
   background-image: url("./assets/img/warm_bg.jpg");
+  transition: 0.5s;
 }
 </style>
