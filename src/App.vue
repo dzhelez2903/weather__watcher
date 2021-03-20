@@ -24,7 +24,6 @@
            @click="selected(w)"
            :class="{selected: sel === w}"
       >
-
       <div class="cityBlock" @click="add">
           {{ w.name }}, {{ w.country }}
           <div class="icon">
@@ -65,9 +64,7 @@
           </div>
           <div class="icons">
             <div class="wind">
-              <svg width="63px" height="48px" viewBox="0 0 63 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                <!-- Generator: Sketch 3.0.3 (7891) - http://www.bohemiancoding.com/sketch -->
-                <title>Weather-wind</title>
+              <svg width="63px" height="48px" viewBox="0 0 63 48" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <desc>Created with Sketch.</desc>
                 <defs></defs>
                 <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
@@ -82,29 +79,28 @@
               {{ sel.wind }} m/s
             </div>
             <div class="humidity">
-              <svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
-                   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="48px" height="64px"
-                   viewBox="0 0 48 64" enable-background="new 0 0 48 64" xml:space="preserve">
-                <title>Wave-signal-1</title>
-                <desc>Created with Sketch.</desc>
-                <g id="Page-1" sketch:type="MSPage">
-	              <g id="Wave-signal-1" transform="translate(1.000000, 2.000000)" sketch:type="MSLayerGroup">
-		            <path id="Shape" sketch:type="MSShapeGroup" fill="none" stroke="#fff" stroke-width="2" d="M25,27.9c1.7-0.9,2.9-2.7,2.9-4.7
-			          c0-2.9-2.3-5.3-5.1-5.3s-4.9,2.4-4.9,5.3c0,2.1,1.3,4,2.9,4.8c-3.8,4.7-6.9,19.5-6.9,23.8c0,5.1,4.2,9.2,9.1,9.2s8.9-4,8.9-9.1
-			          C32,47.6,28.8,32.6,25,27.9L25,27.9z"/>
-                <path id="Shape_2_" sketch:type="MSShapeGroup" fill="none" stroke="#fff" stroke-width="2" d="M4,35.9c-2.5-3.7-4-8.2-4-13
-			          c0-12.7,10.3-23,23-23s23,10.3,23,23c0,4.9-1.5,9.4-4.1,13.1"/>
-                <path id="Shape_1_" sketch:type="MSShapeGroup" fill="none" stroke="#fff" stroke-width="2" d="M10.3,29.9
-			          c-1.2-2.2-2-4.7-2-7.3c0-8.1,6.6-14.7,14.7-14.7s14.7,6.6,14.7,14.7c0,2.7-0.7,5.2-2,7.3"/>
-	              </g>
-                </g>
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="64px" height="64px"  viewBox="0 0 64 64" aria-labelledby="title"
+                   aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <title>Humidity</title>
+                <desc>A line styled icon from Orion Icon Library.</desc>
+                <path data-name="layer2"
+                      d="M51.9 40.1a20.6 20.6 0 0 0-1-4.9C46.9 20.8 32 2 32 2S17.1 20.8 13 35.2a20.6 20.6 0 0 0-1 4.9c0 .5-.1 1-.1 1.5A20.2 20.2 0 0 0 32 62a20.2 20.2 0 0 0 20-20.4c0-.5 0-1-.1-1.5z"
+                      fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round"
+                      stroke-linecap="round"></path>
+                <path data-name="layer1" fill="none" stroke="#fff" stroke-miterlimit="10"
+                      stroke-width="2" d="M38 30L26 50" stroke-linejoin="round" stroke-linecap="round"></path>
+                <circle data-name="layer1" cx="26" cy="32" r="4" fill="none" stroke="#fff"
+                        stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></circle>
+                <circle data-name="layer1" cx="38" cy="48" r="4" fill="none"
+                        stroke="#fff" stroke-miterlimit="10" stroke-width="2" stroke-linejoin="round"
+                        stroke-linecap="round"></circle>
               </svg>
               <br>
-              {{ sel.humidity }}%
+              {{ sel.humidity }} %
             </div>
             <div class="temperature">
-              <svg width="30px" height="65px" viewBox="0 0 30 65" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                <!-- Generator: Sketch 3.0.3 (7891) - http://www.bohemiancoding.com/sketch -->
+              <svg width="30px" height="65px" viewBox="0 0 30 65" version="1.1">
                 <title>Temperature</title>
                 <desc>Created with Sketch.</desc>
                 <defs></defs>
@@ -127,14 +123,13 @@
                 </g>
               </svg>
               <br>
-              {{ sel.temperature }}&degC
+              {{ sel.temperature }} &degC
             </div>
           </div>
           <div v-for="(idx) in cities" :key="idx"></div>
         </div>
         <a @click="sel = null">
-          <svg width="54px" height="64px" viewBox="0 0 54 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:>
-            <!-- Generator: Sketch 3.0.3 (7891) - http://www.bohemiancoding.com/sketch -->
+          <svg width="54px" height="64px" viewBox="0 0 54 64" version="1.1">
             <desc>Created with Sketch.</desc>
             <defs></defs>
             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
@@ -446,7 +441,7 @@ svg {
         align-items: center;
         justify-content: space-between;
         text-align: center;
-        padding: 50px;
+        padding: 50px 70px;
         border-radius: 16px;
         background-color: rgba(255,255,255,0.15);
         box-shadow: 3px 6px rgba(0,0,0,0.25);
@@ -458,7 +453,7 @@ svg {
         align-items: center;
         justify-content: space-between;
         text-align: center;
-        padding: 50px;
+        padding: 50px 70px;
         border-radius: 16px;
         background-color: rgba(255,255,255,0.15);
         box-shadow: 3px 6px rgba(0,0,0,0.25);
@@ -470,7 +465,7 @@ svg {
         align-items: center;
         justify-content: space-between;
         text-align: center;
-        padding: 50px;
+        padding: 50px 70px;
         border-radius: 16px;
         background-color: rgba(255,255,255,0.15);
         box-shadow: 3px 6px rgba(0,0,0,0.25);
