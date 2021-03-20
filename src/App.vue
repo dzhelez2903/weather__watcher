@@ -25,11 +25,10 @@
       <div class="city_border" v-for="w in cities"
            :key="w.name"
            @click="selected(w)"
-           :class="{selected}"
+           :class="{selected: sel === w}"
       >
 
       <div class="cityBlock" @click="add">
-
           {{ w.name }}, {{ w.country }}
           <div class="icon">
           <img v-bind:src="'http://openweathermap.org/img/wn/' + w.icon + '.png'">
@@ -59,8 +58,8 @@
     </template>
     </section>
 
-    <section v-if="sel">
-      <div class="description">
+    <section>
+      <div class="description" v-if="sel">
         <div v-for="(idx) in cities" :key="idx">
           <div class="city">
             <p class="name">{{ sel.name }}, {{ sel.country }}</p>
