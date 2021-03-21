@@ -32,7 +32,7 @@
           </div>
           {{ w.temperature }}&degC
           <a class="btn" @click.stop="handleDelete(w)">
-            <svg width="34px" height="44px" viewBox="0 0 54 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:>
+            <svg class="del" width="34px" height="44px" viewBox="0 0 54 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:>
               <!-- Generator: Sketch 3.0.3 (7891) - http://www.bohemiancoding.com/sketch -->
               <desc>Created with Sketch.</desc>
               <defs></defs>
@@ -130,7 +130,7 @@
           <div v-for="(idx) in cities" :key="idx"></div>
         </div>
         <a @click="sel = null">
-          <svg width="54px" height="64px" viewBox="0 0 54 64" version="1.1">
+          <svg class="del" width="54px" height="64px" viewBox="0 0 54 64" version="1.1">
             <desc>Created with Sketch.</desc>
             <defs></defs>
             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
@@ -171,16 +171,16 @@ export default {
   methods: {
     add() {
       const currentCity = {
+        cod: '200',
         name: this.city,
         country: '',
         weather: '',
         temperature: '',
         wind: '',
         icon:'',
-        cod: '',
       };
 
-      if (this.cities.length > 0 && this.cities[this.cities.length - 1].name === currentCity.name) {
+      if (currentCity.name.length > 0) {
 
         setTimeout(async () => {
           const f = await fetch(
@@ -189,56 +189,41 @@ export default {
           const data = await f.json();
 
           currentCity.cod = data.cod;
-
-          this.error = data.cod;
-
+          this.error = currentCity.cod;
+          console.log(currentCity.cod);
 
           if (currentCity.cod !== '404') {
-            currentCity.cod = data.cod;
+            console.log("inside if 1 " + currentCity.cod);
+            console.log(data);
 
             currentCity.name = data.name;
-
             currentCity.country = data.sys.country;
-
             currentCity.weather = data.weather[0].main;
-
             currentCity.temperature = Math.round(data.main.temp);
-
-            currentCity.wind = Math.round(data.wind.speed);
-
+            currentCity.wind = data.wind.speed;
             currentCity.icon = data.weather[0].icon;
 
             this.cities.push(currentCity);
+
+            this.removeCity.push(
+                setInterval(
+                    async () => {
+                      const f = await fetch(
+                          `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
+                      );
+                      const data = await f.json();
+
+                      this.cities.find(w => w.name === currentCity.name).name = data.name;
+                      this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
+                      this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
+                      this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
+                      this.cities.find(w => w.name === currentCity.name).wind = data.wind.speed;
+                      this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
+
+                      console.log(this.cities.find(w => w.name === currentCity.name));
+                    }, 300000));
           }
-
-        }, 10);
-
-        if (currentCity.cod !== '404') {
-
-          this.removeCity.push(
-              setInterval(
-                  async () => {
-                    const f = await fetch(
-                        `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
-                    );
-                    const data = await f.json();
-
-                    this.cities.find(w => w.name === currentCity.name).cod = data.cod;
-
-                    this.cities.find(w => w.name === currentCity.name).name = data.name;
-
-                    this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
-
-                    this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
-
-                    this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
-
-                    this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
-
-                    this.cities.find(w => w.name === currentCity.name).icon =
-                        data.weather[0].icon;
-                  }, 300000));
-        }
+        }, 0);
       }
       this.city = '';
     },
@@ -285,19 +270,20 @@ body {
   font-family: "Montserrat-Regular", sans-serif;
 }
 
-svg {
+#app {
+  background-image: url("./assets/img/bg.jpg");
+  background-size: cover;
+  background-position: bottom;
+}
+
+
+.del {
   cursor: pointer;
 
   &:hover g {
     stroke: darkred;
     transition: 0.3s;
   }
-}
-
-#app {
-  background-image: url("./assets/img/bg.jpg");
-  background-size: cover;
-  background-position: bottom;
 }
 
 .main {
@@ -352,12 +338,12 @@ svg {
     padding: 7px 35px;
     font-size: 20px;
   }
+}
 
-  .input input.error {
-    border: 2px solid red;
-    box-shadow: 0px 0px 27px 8px rgba(239, 32, 90, 0.2) inset;
-    transition: 0.3s;
-  }
+.input input.error {
+  border: 2px solid red;
+  box-shadow: 0px 0px 27px 8px rgba(239, 32, 90, 0.2) inset;
+  transition: 0.3s;
 }
 
 .selected {
@@ -418,6 +404,7 @@ svg {
     background-position: bottom;
     border-radius: 16px;
     box-shadow: 3px 6px rgba(0,0,0,0.25);
+
 
     .city {
       width: 30%;
