@@ -176,9 +176,10 @@ export default {
         wind: '',
         humidity: '',
         icon:'',
+        cod: '',
       };
 
-      if (currentCity.name.length > 0) {
+      if (currentCity.name.length > 0 || currentCity.cod == '404') {
         this.cities.push(currentCity);
 
         setTimeout(async () => {
@@ -186,7 +187,9 @@ export default {
               `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
           );
           const data = await f.json();
-          console.log(data);
+          console.log(f);
+          console.log(data.cod);
+          this.cities.find(w => w.name === currentCity.name).cod = data.cod;
 
           this.cities.find(w => w.name === currentCity.name).name = data.name;
 
@@ -397,7 +400,6 @@ svg {
     background-position: bottom;
     border-radius: 16px;
     box-shadow: 3px 6px rgba(0,0,0,0.25);
-    position: relative;
 
     .city {
       width: 30%;
