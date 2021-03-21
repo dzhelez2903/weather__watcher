@@ -8,7 +8,7 @@
             @keydown.enter="add"
             type="text"
             placeholder= "Enter city name..."
-            :class="{error: error == 404}"
+            :class="{error: error === '404'}"
         />
       </div>
       <button @click="add" type="button">
@@ -164,7 +164,7 @@ export default {
       removeCity: [],
       details: [],
       sel: '',
-      error: '',
+      error: '200',
     };
   },
 
@@ -180,20 +180,18 @@ export default {
         cod: '',
       };
 
-      if (currentCity.name.length > 0) {
+      if (this.cities.length > 0 && this.cities[this.cities.length - 1].name === currentCity.name) {
 
         setTimeout(async () => {
           const f = await fetch(
               `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
           );
           const data = await f.json();
-          console.log(data);
 
           currentCity.cod = data.cod;
 
           this.error = data.cod;
 
-          console.log(this.error);
 
           if (currentCity.cod !== '404') {
             currentCity.cod = data.cod;
@@ -224,7 +222,6 @@ export default {
                         `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
                     );
                     const data = await f.json();
-                    console.log(data);
 
                     this.cities.find(w => w.name === currentCity.name).cod = data.cod;
 
@@ -354,6 +351,12 @@ svg {
     border: none;
     padding: 7px 35px;
     font-size: 20px;
+  }
+
+  .input input.error {
+    border: 2px solid red;
+    box-shadow: 0px 0px 27px 8px rgba(239, 32, 90, 0.2) inset;
+    transition: 0.3s;
   }
 }
 
@@ -493,10 +496,5 @@ svg {
 .hot {
   background-image: url("./assets/img/warm_bg.jpg");
   transition: 0.5s;
-}
-
-.error {
-  box-shadow: 0px 0px 27px 8px rgba(239, 32, 90, 0.2) inset;
-  transition: 0.3s;
 }
 </style>
