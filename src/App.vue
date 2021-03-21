@@ -8,6 +8,7 @@
             @keydown.enter="add"
             type="text"
             placeholder= "Enter city name..."
+            :class="{error: error == 404}"
         />
       </div>
       <button @click="add" type="button">
@@ -162,7 +163,8 @@ export default {
       cities: [],
       removeCity: [],
       details: [],
-      sel: null,
+      sel: '',
+      error: '',
     };
   },
 
@@ -174,62 +176,85 @@ export default {
         weather: '',
         temperature: '',
         wind: '',
-        humidity: '',
         icon:'',
         cod: '',
       };
 
-      if (currentCity.name.length > 0 || currentCity.cod == '404') {
-        this.cities.push(currentCity);
+      if (currentCity.name.length > 0) {
 
         setTimeout(async () => {
           const f = await fetch(
               `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
           );
           const data = await f.json();
-          console.log(f);
-          console.log(data.cod);
-          this.cities.find(w => w.name === currentCity.name).cod = data.cod;
+          console.log(data);
 
-          this.cities.find(w => w.name === currentCity.name).name = data.name;
+          currentCity.cod = data.cod;
 
-          this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
+          this.error = data.cod;
 
-          this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].description;
+          console.log(this.error);
 
-          this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
+          if (currentCity.cod !== '404') {
+            currentCity.cod = data.cod;
 
-          this.cities.find(w => w.name === currentCity.name).humidity = data.main.humidity;
+            currentCity.name = data.name;
 
-          this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
+            currentCity.country = data.sys.country;
 
-          this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
+            currentCity.weather = data.weather[0].main;
+
+            currentCity.temperature = Math.round(data.main.temp);
+
+            currentCity.wind = Math.round(data.wind.speed);
+
+            currentCity.icon = data.weather[0].icon;
+
+            this.cities.push(currentCity);
+          }
+
         }, 10);
 
-        this.removeCity.push(setInterval(
-                async () => {
-                  const f = await fetch(
-                      `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
-                  );
-                  const data = await f.json();
-                  console.log(data);
+        if (currentCity.cod !== '404') {
 
-                  this.cities.find(w => w.name === currentCity.name).name = data.name;
+          this.removeCity.push(
+              setInterval(
+                  async () => {
+                    const f = await fetch(
+                        `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
+                    );
+                    const data = await f.json();
+                    console.log(data);
 
-                  this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
+                    this.cities.find(w => w.name === currentCity.name).cod = data.cod;
 
-                  this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].description;
+                    this.cities.find(w => w.name === currentCity.name).name = data.name;
 
-                  this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
+                    this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
 
-                  this.cities.find(w => w.name === currentCity.name).humidity = data.main.humidity;
+                    this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
 
-                  this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
+                    this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
 
-                  this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
-                }, 300000));
+                    this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
+
+                    this.cities.find(w => w.name === currentCity.name).icon =
+                        data.weather[0].icon;
+                  }, 300000));
+        }
       }
       this.city = '';
+    },
+
+    dateBuilder () {
+      let d = new Date();
+      let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      let day = days[d.getDay()];
+      let date = d.getDate();
+      let month = months[d.getMonth()];
+      let year = d.getFullYear();
+      return `${day} ${date} ${month} ${year}`;
     },
 
     selected(city) {
@@ -242,17 +267,7 @@ export default {
       clearInterval(this.removeCity[idx]);
       this.removeCity = this.removeCity.filter(e => e !== this.removeCity[idx]);
       this.cities = this.cities.filter(w => w !== this.cities[idx]);
-    },
-
-    dateBuilder () {
-      let d = new Date();
-      let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      let day = days[d.getDay()];
-      let date = d.getDate();
-      let month = months[d.getMonth()];
-      let year = d.getFullYear();
-      return `${day} ${date} ${month} ${year}`;
+      console.log(this.cities);
     },
   },
 };
@@ -478,5 +493,10 @@ svg {
 .hot {
   background-image: url("./assets/img/warm_bg.jpg");
   transition: 0.5s;
+}
+
+.error {
+  box-shadow: 0px 0px 27px 8px rgba(239, 32, 90, 0.2) inset;
+  transition: 0.3s;
 }
 </style>
