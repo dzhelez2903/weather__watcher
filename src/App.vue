@@ -177,7 +177,8 @@ export default {
         weather: '',
         temperature: '',
         wind: '',
-        icon:'',
+        icon: '',
+        humidity: '',
       };
 
       if (currentCity.name.length > 0) {
@@ -190,17 +191,16 @@ export default {
 
           currentCity.cod = data.cod;
           this.error = currentCity.cod;
-          console.log(currentCity.cod);
 
           if (currentCity.cod !== '404') {
-            console.log("inside if 1 " + currentCity.cod);
             console.log(data);
 
             currentCity.name = data.name;
             currentCity.country = data.sys.country;
             currentCity.weather = data.weather[0].main;
             currentCity.temperature = Math.round(data.main.temp);
-            currentCity.wind = data.wind.speed;
+            currentCity.wind = Math.round(data.wind.speed);
+            currentCity.humidity = data.main.humidity;
             currentCity.icon = data.weather[0].icon;
 
             this.cities.push(currentCity);
@@ -212,15 +212,14 @@ export default {
                           `${this.url_base}weather?q=${currentCity.name}&units=metric&APPID=${this.api_key}&lang={this.language}`
                       );
                       const data = await f.json();
-
+                      console.log(data);
                       this.cities.find(w => w.name === currentCity.name).name = data.name;
                       this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
                       this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
                       this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
-                      this.cities.find(w => w.name === currentCity.name).wind = data.wind.speed;
+                      this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
+                      this.cities.find(w => w.name === currentCity.name).wind = data.main.humidity;
                       this.cities.find(w => w.name === currentCity.name).icon = data.weather[0].icon;
-
-                      console.log(this.cities.find(w => w.name === currentCity.name));
                     }, 300000));
           }
         }, 0);
@@ -249,7 +248,6 @@ export default {
       clearInterval(this.removeCity[idx]);
       this.removeCity = this.removeCity.filter(e => e !== this.removeCity[idx]);
       this.cities = this.cities.filter(w => w !== this.cities[idx]);
-      console.log(this.cities);
     },
   },
 };
