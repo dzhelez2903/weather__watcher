@@ -197,7 +197,7 @@ export default {
 
             currentCity.name = data.name;
             currentCity.country = data.sys.country;
-            currentCity.weather = data.weather[0].main;
+            currentCity.weather = data.weather[0].description;
             currentCity.temperature = Math.round(data.main.temp);
             currentCity.wind = Math.round(data.wind.speed);
             currentCity.humidity = data.main.humidity;
@@ -215,7 +215,7 @@ export default {
                       console.log(data);
                       this.cities.find(w => w.name === currentCity.name).name = data.name;
                       this.cities.find(w => w.name === currentCity.name).country = data.sys.country;
-                      this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].main;
+                      this.cities.find(w => w.name === currentCity.name).weather = data.weather[0].description;
                       this.cities.find(w => w.name === currentCity.name).temperature = Math.round(data.main.temp);
                       this.cities.find(w => w.name === currentCity.name).wind = Math.round(data.wind.speed);
                       this.cities.find(w => w.name === currentCity.name).humidity = data.main.humidity;
