@@ -162,16 +162,15 @@ export default {
       city: '',
       cities: [],
       removeCity: [],
-      details: [],
       sel: '',
-      error: '200',
+      error: '',
     };
   },
 
   methods: {
     add() {
       const currentCity = {
-        cod: '200',
+        cod: '',
         name: this.city,
         country: '',
         weather: '',
@@ -240,7 +239,6 @@ export default {
 
     selected(city) {
       this.sel = city;
-      this.details = [];
     },
 
     handleDelete(cityToRemove) {
